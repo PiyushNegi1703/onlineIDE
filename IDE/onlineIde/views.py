@@ -1,19 +1,21 @@
-from django.http import HttpResponse # Importing the httpresponse library to get the response
+from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 from .models import SubTab
 from .serializers import SubSerializer, UserSerializer
 from .utils import create_code_file, execute_code
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
+import multiprocessing as mp
 
 
-# Create your views here.
+def hello_world(request):
+    return HttpResponse("Welcome to online ide")
 
-def hello_world(request): #A view responding as hello_world
-    return HttpResponse("Hello World")
 
 class LoginView(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
@@ -25,18 +27,49 @@ class LoginView(KnoxLoginView):
         login(request, user)
         return super(LoginView, self).post(request, format=None)
 
+
+@api_view(http_method_names=["POST"])
+@permission_classes((permissions.AllowAny,))
+def register(request):
+    serializer = UserSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = serializer.save()
+    return Response(UserSerializer(user).data, status=201)
+
+
 class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticated,)
     queryset = User.objects.all()
 
-class SubViewSet(ModelViewSet): #Creating a ViewSet for submissions
+    def list(self, request, *args, **kwargs):
+        return Response(UserSerializer(request.user).data, status=200)
+
+
+class SubViewSet(ModelViewSet):
     queryset = SubTab.objects.all()
     serializer_class = SubSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
-    def create(self, request, *args, **kwargs): #A function to create the submissions
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset = queryset.filter(user=request.user)
+        return Response(self.get_serializer(queryset, many=True).data, status=200)
+
+    def create(self, request, *args, **kwargs):
         request.data["status"] = "P"
-        file_name = create_code_file(request.data.get("code"), request.data.get("language"))
-        output = execute_code(file_name, request.data.get("language"))
-        request.data["output"] = output
-        return super().create(request, args, kwargs)
+        request.data["user"] = request.user.pk
+        file_name = create_code_file(request.data.get("code"),
+                                     request.data.get("language"))
+
+        serializer = SubSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        submission = serializer.save()
+
+        p = mp.Process(target=execute_code,
+                    args=(file_name, request.data.get("language"), submission.pk))
+        p.start()
+
+        return Response({
+            "message": "Submitted successfully"
+        }, status=200)
