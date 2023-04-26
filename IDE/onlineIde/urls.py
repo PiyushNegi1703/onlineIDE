@@ -9,7 +9,8 @@ router.register("submit", views.SubViewSet) #Registering the submit Route
 
 # Creating the routes
 urlpatterns = [
-    path('', views.hello_world, name="helloWorld")
+    path('', views.hello_world, name="helloWorld"),
+    path('login/', views.LoginView.as_view())
 ]
 
 urlpatterns += router.urls #Adding the urlpatterns registered above to urlpatterns

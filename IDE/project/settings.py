@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'onlineIde.apps.OnlineideConfig',
     'rest_framework',
+    'knox'
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,10 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWROK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication')
+}
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
