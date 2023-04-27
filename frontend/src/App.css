@@ -1,0 +1,10 @@
+.code-container {
+  width: 70%;
+}
+
+textarea {
+  border: 1px solid black;
+  tab-size: 40px;
+  font-size: 1.2em;
+  white-space: pre-line;
+}
