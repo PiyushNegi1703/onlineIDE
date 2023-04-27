@@ -1,0 +1,1 @@
+int main(){\n    cout<<5;\n}
