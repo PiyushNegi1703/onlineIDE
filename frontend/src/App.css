@@ -8,3 +8,21 @@ textarea {
   font-size: 1.2em;
   white-space: pre-line;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  gap: 1vh;
+}
+
+form input {
+  width: 100%;
+  color: white;
+  padding: 10px;
+  font-size: 1.2em;
+}
