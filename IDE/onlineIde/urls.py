@@ -1,17 +1,16 @@
-from django.urls import path #Importing Path library to create path routes
-from . import views #Impoting the views for the request handling
-from rest_framework.routers import DefaultRouter #Importing DefaultRouter to create a router
+from django.urls import path
+from . import views
+from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter() #Providing the value of default router to router variable
+router = DefaultRouter()
 
-router.register("user", views.UserViewSet) #Registering the user Route
-router.register("submit", views.SubViewSet) #Registering the submit Route
+router.register("user", views.UserViewSet)
+router.register("submit", views.SubViewSet)
 
-# Creating the routes
 urlpatterns = [
-    path('', views.hello_world, name="helloWorld"),
-    path('login/', views.LoginView.as_view()),
-    path('register/', views.register)
+    path("", views.hello_world),
+    path("login/", views.LoginView.as_view()),
+    path("register/", views.register),
 ]
 
-urlpatterns += router.urls #Adding the urlpatterns registered above to urlpatterns
+urlpatterns += router.urls

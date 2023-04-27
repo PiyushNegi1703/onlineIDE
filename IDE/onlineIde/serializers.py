@@ -1,8 +1,7 @@
-from rest_framework import serializers # Importing Serializers library to create serializers
-from .models import SubTab # Imporiting models from models folder
+from rest_framework import serializers
+from .models import SubTab
 from django.contrib.auth.models import User
 
-# Creating the Serializers
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
 
 class SubSerializer(serializers.ModelSerializer):
     class Meta:
