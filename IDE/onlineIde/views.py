@@ -71,5 +71,5 @@ class SubViewSet(ModelViewSet):
         p.start()
 
         return Response({
-            p
+            submission
         }, status=200)

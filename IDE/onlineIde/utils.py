@@ -16,18 +16,25 @@ def execute_code(file_name, language, submission_id):
     submission = SubTab.objects.get(pk=submission_id)
     if language == "cpp":
         # g++ xyz.cpp
-        result = subprocess.run(["g++", "code/" + file_name], stdout=subprocess.PIPE)
+        result = subprocess.run(["g++", "code/" + file_name], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
-            # Compile time error
+            # Compile error
+            submission.output = result.stderr
             submission.status = 'E'
             submission.save()
             return
-        result = subprocess.run(["a.exe"], stdout=subprocess.PIPE)
+        else:
+            result = subprocess.run(["a.exe"], stdout=subprocess.PIPE)
+        
         if result.returncode != 0:
+            #Runtime error
+            submission = result.stderr
             submission.status = 'E'
             submission.save()
             return
-        submission.output = result.stdout.decode("utf-8")
-        submission.status = 'S'
-        submission.save()
+        else:
+            submission.output = result.stdout.decode("utf-8")
+            submission.status = 'S'
+            submission.save()
+            return
 
