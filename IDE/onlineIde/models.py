@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class SubTab(models.Model):
+class SubmissionModel(models.Model):
     ACCEPTANCE_STATUS = [
         ("S", "Success"),
         ("E", "Error"),

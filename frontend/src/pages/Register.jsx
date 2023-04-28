@@ -2,17 +2,17 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 
-const Login = () => {
+const Register = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-    const [error, setError] = useState('')
+    const [error, setError] = useState({})
     const navigate = useNavigate()
     
     const handleSubmit = async(e) => {
         e.preventDefault()
         const Body = {username, password, email}
-        const response = await fetch(`${import.meta.env.VITE_API}login/`, {
+        const response = await fetch(`${import.meta.env.VITE_API}register/`, {
             method: "POST",
             body: JSON.stringify(Body),
             headers: {
@@ -21,13 +21,15 @@ const Login = () => {
         })
         const json = await response.json()
         console.log(json)
+
         if(response.ok) {
-          sessionStorage.setItem('token', json.token)
-          navigate('/home')
+            navigate('/login')
         }
-        else {
-          setError(JSON.stringify(json))
+        if(!response.ok) {
+            setError(json)
         }
+
+        console.log(error)
     }
   return (
     <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -37,9 +39,8 @@ const Login = () => {
         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
         <button type="Submit">Submit</button>
       </form>
-      <div>{error}</div>
     </div>
   )
 }
 
-export default Login
+export default Register

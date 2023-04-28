@@ -88,13 +88,11 @@ const Home = () => {
       <div className="code-container">
         <h1>Algo IDE for CPP</h1>
         <p
-          contentEditable
           style={{ backgroundColor: "#3b3b3b", color: "white", width: "63%" }}
         >
           #include &lt;bits/stdc++.h&gt;
         </p>
         <p
-          contentEditable
           style={{ backgroundColor: "#3b3b3b", color: "white", width: "63%" }}
         >
           using namespace std;
@@ -104,7 +102,7 @@ const Home = () => {
           value={code}
           onKeyDown={handleKeyDown}
           onChange={(e) => setCode(e.target.value)}
-          defaultValue={"int main(){\n\n}"}
+          // defaultValue={"int main(){\n\n}"}
           cols="90"
           rows="40"
           id="code-editor"

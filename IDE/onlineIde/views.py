@@ -5,8 +5,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from .models import SubTab
-from .serializers import SubSerializer, UserSerializer
+from .models import SubmissionModel
+from .serializers import SubmissionSerializer, UserSerializer
 from .utils import create_code_file, execute_code
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
@@ -46,9 +46,9 @@ class UserViewSet(ModelViewSet):
         return Response(UserSerializer(request.user).data, status=200)
 
 
-class SubViewSet(ModelViewSet):
-    queryset = SubTab.objects.all()
-    serializer_class = SubSerializer
+class SubmissionViewSet(ModelViewSet):
+    queryset = SubmissionModel.objects.all()
+    serializer_class = SubmissionSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
     def list(self, request, *args, **kwargs):
@@ -62,7 +62,7 @@ class SubViewSet(ModelViewSet):
         file_name = create_code_file(request.data.get("code"),
                                      request.data.get("language"))
 
-        serializer = SubSerializer(data=request.data)
+        serializer = SubmissionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         submission = serializer.save()
 
