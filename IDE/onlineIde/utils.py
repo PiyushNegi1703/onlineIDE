@@ -1,6 +1,7 @@
 import uuid
 import subprocess
 import django
+import io
 django.setup()
 from .models import SubTab
 
@@ -16,6 +17,7 @@ def execute_code(file_name, language, submission_id):
     submission = SubTab.objects.get(pk=submission_id)
     if language == "cpp":
         # g++ xyz.cpp
+        # input_file = io.StringIO(submission.user_input)
         result = subprocess.run(["g++", "code/" + file_name], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
             # Compile error
@@ -24,7 +26,7 @@ def execute_code(file_name, language, submission_id):
             submission.save()
             return
         else:
-            result = subprocess.run(["a.exe"], stdout=subprocess.PIPE)
+            result = subprocess.run(["a.exe"], input=submission.user_input.encode("utf-8"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         if result.returncode != 0:
             #Runtime error
