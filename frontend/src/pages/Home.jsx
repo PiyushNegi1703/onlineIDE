@@ -1,8 +1,22 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const Home = () => {
   const [code, setCode] = useState("int main(){\n\n}");
   const [output, setOutput] = useState('Your output will appear here')
+  const [loading, setLoading] = useState(false)
+  const textareaRef = useRef(null);
+
+  function handleKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const selectionStart = textareaRef.current.selectionStart;
+      const selectionEnd = textareaRef.current.selectionEnd;
+      const text = code.slice(0, selectionStart) + '  ' + code.slice(selectionEnd);
+      setCode(text);
+      textareaRef.current.selectionStart = textareaRef.current.selectionEnd = selectionStart + 2;
+    }
+  }
+
   let codeStr = "#include <bits/stdc++.h>\nusing namespace std;";
 
   let str = code.split("\n");
@@ -25,19 +39,38 @@ const Home = () => {
         'Authorization': `Token ${sessionStorage.getItem('token')}`
       }
     })
-  }
-  
-  const getOutput = async() => {
-    const response = await fetch(`${import.meta.env.VITE_API}submit/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Token ${sessionStorage.getItem('token')}`
+
+    const getOutput = async() => {
+      const response = await fetch(`${import.meta.env.VITE_API}submit/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Token ${sessionStorage.getItem('token')}`
+        }
+      })
+      
+      const json = await response.json();
+      // console.log(json)
+
+      // if(json.length !== 0) {
+      //   codeArr = json
+      // }
+
+      if(json[json.length - 1].status === 'P') {
+        setLoading(true);
+        setTimeout(() => {
+          getOutput();
+         
+        }, 3000);
+       
+       
       }
-    })
-  
-    const json = await response.json()
-    console.log(json)
-    setOutput(json[json.length - 1].output)
+      else {
+        setOutput(json[json.length - 1].output)
+        setLoading(false)
+      }
+    }
+
+    getOutput()
   }
 
   return (
@@ -50,17 +83,20 @@ const Home = () => {
     >
       <div className="code-container">
         <h1>Algo IDE for CPP</h1>
-        <p>#include &lt;bits/stdc++.h&gt;</p>
-        <p>using namespace std;</p>
+        <p contentEditable style={{backgroundColor: '#3b3b3b', color: 'white', width: '63%'}}>#include &lt;bits/stdc++.h&gt;</p>
+        <p contentEditable style={{backgroundColor: '#3b3b3b', color: 'white', width: '63%'}}>using namespace std;</p>
         <textarea
+        ref={textareaRef}
+        value={code}
+        onKeyDown={handleKeyDown}
           onChange={(e) => setCode(e.target.value)}
           defaultValue={"int main(){\n\n}"}
           cols="90"
           rows="40"
           id="code-editor"
         ></textarea>
-        <button onClick={handleClick}>Submit</button>
-        <button onClick={getOutput}>Get Output</button>
+        <button onClick={handleClick} disabled={loading} className={loading ? "dis-button" : ""}>{loading ? "Compiling" : "Submit"}</button>
+        {/* <button onClick={getOutput}>Get Output</button> */}
       </div>
       <div className="output-container">
         <p style={{marginBottom: "1em"}}>OUTPUT</p>
