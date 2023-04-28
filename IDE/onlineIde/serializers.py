@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SubTab
+from .models import SubmissionModel
 from django.contrib.auth.models import User
 
 
@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class SubSerializer(serializers.ModelSerializer):
+class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SubTab
+        model = SubmissionModel
         fields = "__all__"

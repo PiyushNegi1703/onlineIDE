@@ -1,1 +1,0 @@
-#include <bits/stdc++.h>\nusing namespace std;int main(){    cout<<5;}

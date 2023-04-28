@@ -1,1 +1,0 @@
-#include <bits/stdc++.h>\n using namespace std;int main(){    cout<<5;}
