@@ -23,6 +23,7 @@ const Login = () => {
         console.log(json)
         if(response.ok) {
           sessionStorage.setItem('token', json.token)
+          window.alert("Logged in successfully")
           navigate('/home')
         }
         else {
@@ -30,11 +31,13 @@ const Login = () => {
         }
     }
   return (
-    <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+    <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+      <h1>Login with your credentials</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+        <p style={{color: "black", fontWeight: "500"}}>Don't have an account? <span onClick={() => navigate('/')} className="nav">Register</span></p>
         <button type="Submit">Submit</button>
       </form>
       <div>{error}</div>

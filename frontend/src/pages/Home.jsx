@@ -32,7 +32,7 @@ const Home = () => {
   const Body = {
     code: codeStr,
     language: "cpp",
-    user_input: input
+    user_input: input,
   };
 
   const handleClick = async () => {
@@ -68,9 +68,10 @@ const Home = () => {
       } else {
         setOutput(json[json.length - 1].output);
         setLoading(false);
+        setError(false)
       }
-      if(json[json.length - 1].status === "E") {
-        setError(true)
+      if (json[json.length - 1].status === "E") {
+        setError(true);
       }
     };
 
@@ -78,57 +79,61 @@ const Home = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
-      }}
-    >
-      <div className="code-container">
-        <h1>Algo IDE for CPP</h1>
-        <p
-          style={{ backgroundColor: "#3b3b3b", color: "white", width: "63%" }}
-        >
-          #include &lt;bits/stdc++.h&gt;
-        </p>
-        <p
-          style={{ backgroundColor: "#3b3b3b", color: "white", width: "63%" }}
-        >
-          using namespace std;
-        </p>
-        <textarea
-          ref={textareaRef}
-          value={code}
-          onKeyDown={handleKeyDown}
-          onChange={(e) => setCode(e.target.value)}
-          // defaultValue={"int main(){\n\n}"}
-          cols="90"
-          rows="40"
-          id="code-editor"
-        ></textarea>
-        <button
-          onClick={handleClick}
-          disabled={loading}
-          className={loading ? "dis-button" : ""}
-        >
-          {loading ? "Compiling" : "Submit"}
-        </button>
-        {/* <button onClick={getOutput}>Get Output</button> */}
-      </div>
-      <div className="io-container">
-        <div className="input-container">
-          <label>
-            Custom Input
-            <input type="text" onChange={(e) => setInput(e.target.value)} />
-          </label>
+    <>
+      <h1>Algo IDE for CPP</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          height: "70vh"
+        }}
+      >
+        <div className="code-container">
+          <p>
+            #include &lt;bits/stdc++.h&gt;
+          </p>
+          <p>
+            using namespace std;
+          </p>
+          <br />
+          <span style={{color: "rgba(255, 255, 255, 0.4)", fontStyle: "italic"}}>// write your code logic below</span>
+          <br />
+          <textarea
+            ref={textareaRef}
+            value={code}
+            onKeyDown={handleKeyDown}
+            onChange={(e) => setCode(e.target.value)}
+            cols="40"
+            rows="40"
+            id="code-editor"
+          ></textarea>
+          <button
+            onClick={handleClick}
+            disabled={loading}
+            className={loading ? "dis-button" : ""}
+          >
+            {loading ? "Compiling" : "Submit"}
+          </button>
+          {/* <button onClick={getOutput}>Get Output</button> */}
         </div>
-        <div className="output-container">
-          <p style={{ marginBottom: "1em" }}>OUTPUT</p>
-          <span className={error ? "error" : ""}>{output}</span>
+        <div className="io-container">
+          <div className="input-container">
+            <label>
+              Custom Input
+              {/* <br /> */}
+              <textarea type="text" onChange={(e) => setInput(e.target.value)} />
+            </label>
+          </div>
+          <div className="output-wrapper">
+            <p style={{color: "rgba(0, 0, 0, 0.5)", fontWeight: "700", fontSize: "1.2em", width: "100%", margin: "0px"}}>Output</p>
+            <div className="output-container">
+              <span className={error ? "error" : "output"}>{output}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

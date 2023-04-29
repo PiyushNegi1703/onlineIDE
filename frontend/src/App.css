@@ -1,13 +1,84 @@
 .code-container {
-  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 40%;
+  background-color: #3b3b3b;
+  position: relative;
+  padding: 10px;
+  height: 70vh;
+}
+
+.io-container {
+  display: flex;
+  width: 40%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.output-wrapper {
+  width: 100%;
+  height: 45%;
+  color: white;
+}
+
+.output-container {
+  padding: 10px;
+  background-color: #1a1a1a;
+  height: 100%;
+}
+
+.input-container {
+  width: 100%;
+  height: 45%;
+}
+
+hr {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+label textarea {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+
+p {
+  line-height: 1.5;
+  color: white;
+}
+
+.nav {
+  color: red;
+  cursor: pointer;
+}
+
+.nav:hover {
+  font-weight: 700;
 }
 
 textarea {
-  border: 1px solid black;
+  border: none;
   tab-size: 40px;
   font-size: 1.2em;
   white-space: pre-line;
-  padding: 5px;
+  padding-top: 7px;
+  width: 100%;
+}
+
+textarea:focus-visible {
+  outline: none;
 }
 
 form {
@@ -18,7 +89,9 @@ form {
   justify-content: center;
   align-items: center;
   width: 50%;
+  height: 30vh;
   gap: 1vh;
+  position: relative;
 }
 
 .dis-button {
@@ -38,4 +111,8 @@ form input {
 
 .error {
   color: red;
+}
+
+.output {
+  color: white;
 }

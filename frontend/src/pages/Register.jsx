@@ -23,6 +23,7 @@ const Register = () => {
         console.log(json)
 
         if(response.ok) {
+          window.alert("Registered succesfully. Navigating to the Login page to login with your credentials")
             navigate('/login')
         }
         if(!response.ok) {
@@ -32,11 +33,13 @@ const Register = () => {
         console.log(error)
     }
   return (
-    <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+    <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+        <h1>Register Yourself</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+        <p style={{color: "black", fontWeight: "500"}}>Already have an account? <span onClick={() => navigate('/login')} className="nav">Login</span></p>
         <button type="Submit">Submit</button>
       </form>
     </div>
